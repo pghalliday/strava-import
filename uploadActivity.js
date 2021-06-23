@@ -5,10 +5,6 @@ const FormData = require('form-data');
 const log = require('./log');
 
 module.exports = (token, file) => {
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-    };
-
     const body = new FormData();
     body.append('file', fs.createReadStream(file), {
         name: 'file',
@@ -19,7 +15,9 @@ module.exports = (token, file) => {
 
     return fetch('https://www.strava.com/api/v3/uploads', {
         method: 'POST',
-        headers,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
         body,
     })
         .then(response => response.json())
